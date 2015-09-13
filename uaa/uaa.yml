@@ -19,7 +19,7 @@ oauth:
     admin-portal:
       secret: secret
       authorized-grant-types: authorization_code
-      scope: openid,menu.read,menu.write
+      scope: openid,menu.read,menu.write,order.admin
       authorities: uaa.resource
       redirect-uri: http://localhost:8084/login
 
@@ -27,7 +27,7 @@ scim:
   users:
     - wtran|demo|wtran@pivotal.io|Will|Tran
     - frank|demo|frank@whitehouse.gov|Frank|Underwood|menu.read
-    - freddy|demo|freddy@freddysbbq.com|Freddy|Hayes|menu.read,menu.write
+    - freddy|demo|freddy@freddysbbq.com|Freddy|Hayes|menu.read,menu.write,order.admin
 
 jwt:
   token:

@@ -3,3 +3,8 @@ server.port: 8085
 security:
   basic:
     enabled: false
+spring.oauth2:
+  resource:
+    id: order
+    jwt.keyUri: http://localhost:8080/uaa/token_key
+
