@@ -10,7 +10,7 @@ spring.oauth2:
     userAuthorizationUri: http://localhost:8080/uaa/oauth/authorize
     clientId: admin-portal
     clientSecret: secret
-    scope: openid,menu.read,menu.write
+    scope: openid,menu.read,menu.write,order.admin
   resource:
     jwt.keyUri: http://localhost:8080/uaa/token_key
 
