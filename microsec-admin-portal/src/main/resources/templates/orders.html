@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Freddy's Orders</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <h1>Current Orders</h1>
+  <ul th:each="order : ${orders}">
+    <li>
+      <table>
+        <tr>
+          <td>
+            <table border="1">
+              <tr>
+                <td>Order number</td>
+                <td th:text="${order.id}">1</td>
+              </tr>
+              <tr>
+                <td>Order placed</td>
+                <td th:text="${order.placed}">Today</td>
+              </tr>
+              <tr>
+                <td>Total</td>
+                <td th:text="${order.total}">$ 5.00</td>
+              </tr>
+              <tr>
+                <td>First Name</td>
+                <td th:text="${order.firstName}">Freddy</td>
+              </tr>
+              <tr>
+                <td>Last Name</td>
+                <td th:text="${order.lastName}">Hayes</td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td th:text="${order.email}">freddy@freddysbbq.com</td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table border="1">
+              <thead>
+                <tr>
+                  <td>Item</td>
+                  <td>Price</td>
+                  <td>Quantity</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="item : ${order.orderItems}">
+                  <td th:text="${item.name}">Something</td>
+                  <td th:text="${item.price}">$1.00</td>
+                  <td th:text="${item.quantity}">1</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <form method="post" th:action="|${order.id}/delete|">
+        <input type="submit" value="Close this order" />
+      </form>
+    </li>
+  </ul>
+  <a href="/">Back to home</a>
+</body>
+</html>

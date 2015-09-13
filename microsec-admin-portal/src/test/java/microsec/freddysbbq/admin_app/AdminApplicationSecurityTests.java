@@ -28,4 +28,10 @@ public class AdminApplicationSecurityTests extends SecurityIntegrationTest {
         checkRequiresHttpsAndOauthSso("/menuItems/1/delete", ssoProperties.getLoginPath());
     }
 
+    @Test
+    public void testOrderSecurity() throws Exception {
+        checkRequiresHttpsAndOauthSso("/orders/", ssoProperties.getLoginPath());
+        checkRequiresHttpsAndOauthSso("/orders/1/delete", ssoProperties.getLoginPath());
+    }
+
 }

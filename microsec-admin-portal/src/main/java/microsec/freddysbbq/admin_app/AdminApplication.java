@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import microsec.common.DumpTokenEndpointConfig;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
+import microsec.freddysbbq.order.model.v1.Order;
 
 @SpringBootApplication
 @Controller
@@ -133,6 +134,25 @@ public class AdminApplication {
     @RequestMapping(method = RequestMethod.POST, value = "/menuItems/{id}/delete")
     public String deleteMenuItem(@PathVariable String id, @ModelAttribute MenuItem menuItem) throws Exception {
         restTemplate.delete("http://localhost:8083/menuItems/{id}", id);
+        return "redirect:..";
+    }
+
+    @RequestMapping("/orders/")
+    public String viewOrders(Model model) {
+        PagedResources<Order> orders = restTemplate
+                .exchange(
+                        "http://localhost:8085/orders",
+                        HttpMethod.GET, null,
+                        new ParameterizedTypeReference<PagedResources<Order>>() {
+                        })
+                .getBody();
+        model.addAttribute("orders", orders.getContent());
+        return "orders";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/orders/{id}/delete")
+    public String deleteOrder(@PathVariable String id) {
+        restTemplate.delete("http://localhost:8085/orders/{id}", id);
         return "redirect:..";
     }
 
