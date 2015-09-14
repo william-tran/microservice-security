@@ -6,5 +6,5 @@ security:
 
 spring.oauth2:
   resource:
-    jwt.keyUri: http://localhost:8080/uaa/token_key
+    jwt.keyUri: ${targets.uaa}/token_key
 
