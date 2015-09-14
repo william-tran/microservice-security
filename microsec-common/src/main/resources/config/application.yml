@@ -7,6 +7,20 @@ security.user.password: password
 spring.thymeleaf.cache: false
 
 targets:
-  uaa: http://localhost:8080/uaa
-  menu: http://localhost:8083
-  order: http://localhost:8085
+  scheme: http
+  uaa: ${targets.scheme}://localhost:8080/uaa
+  menu: ${targets.scheme}://localhost:8083
+  order: ${targets.scheme}://localhost:8085
+  
+---
+
+spring:
+  profiles: cloud 
+
+security.require_ssl: true
+
+targets:
+  scheme: https
+  uaa: ${targets.scheme}://wtran-springone.login.run.pivotal.io
+  menu: ${targets.scheme}://wtran-microsec-menu.cfapps.io
+  order: ${targets.scheme}://wtran-microsec-order.cfapps.io

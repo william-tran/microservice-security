@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties("targets")
 public class Targets {
+	private String scheme;
     private String uaa;
     private String order;
     private String menu;

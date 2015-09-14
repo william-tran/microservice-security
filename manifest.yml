@@ -1,0 +1,26 @@
+---
+applications:
+  
+ - name: wtran-microsec-customer
+   path: microsec-customer-portal/target/microsec-customer-portal.jar
+   services:
+    - wtran-sso-service
+
+ - name: wtran-microsec-menu
+   path: microsec-menu-service/target/microsec-menu-service.jar
+   services:
+    - wtran-mysql
+
+ - name: wtran-microsec-admin
+   path: microsec-admin-portal/target/microsec-admin-portal.jar
+   services:
+    - wtran-sso-service
+
+ - name: wtran-microsec-order
+   path: microsec-order-service/target/microsec-order-service.jar
+   services:
+    - wtran-sso-service
+    - wtran-mysql
+    
+ - name: wtran-microsec-gateway
+   path: microsec-token-encryption-gateway/target/microsec-token-encryption-gateway.jar
