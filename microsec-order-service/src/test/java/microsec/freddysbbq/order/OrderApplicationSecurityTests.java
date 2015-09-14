@@ -1,5 +1,6 @@
 package microsec.freddysbbq.order;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -154,7 +155,7 @@ public class OrderApplicationSecurityTests extends SecurityIntegrationTest {
         MenuItem menuItem = new MenuItem();
         menuItem.setName("test");
         menuItem.setPrice(new BigDecimal(1));
-        when(mockRestTemplate.getForObject(anyString(), eq(MenuItem.class), anyString()))
+        when(mockRestTemplate.getForObject(anyString(), eq(MenuItem.class), any(), any()))
                 .thenReturn(menuItem);
 
         response = httpsRequest(HttpMethod.POST, "/myorders", token, ContentType.APPLICATION_JSON, body);

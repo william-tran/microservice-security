@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
+import microsec.common.Targets;
 import microsec.freddysbbq.order.model.v1.Order;
 
 @SpringBootApplication
@@ -31,6 +32,11 @@ public class OrderApplication {
         protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
             config.exposeIdsFor(Order.class);
         }
+    }
+
+    @Bean
+    public Targets targets() {
+        return new Targets();
     }
 
     @Bean

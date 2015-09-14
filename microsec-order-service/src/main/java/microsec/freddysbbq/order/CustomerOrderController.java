@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
 import lombok.Setter;
+import microsec.common.Targets;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 import microsec.freddysbbq.order.model.v1.Order;
 import microsec.freddysbbq.order.model.v1.OrderItem;
@@ -45,6 +46,9 @@ public class CustomerOrderController {
 
     @Autowired
     private ResourceServerProperties resourceServerProperties;
+
+    @Autowired
+    private Targets targets;
 
     @PreAuthorize("#oauth2.hasScope('order.me')")
     @RequestMapping("/myorders")
@@ -77,7 +81,7 @@ public class CustomerOrderController {
             }
             try {
                 MenuItem item = oAuth2RestTemplate
-                        .getForObject("http://localhost:8083/menuItems/{id}", MenuItem.class, itemId);
+                        .getForObject("{menu}/menuItems/{id}", MenuItem.class, targets.getMenu(), itemId);
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrder(order);
                 orderItem.setMenuItemId(itemId);
