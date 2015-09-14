@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Data;
 import microsec.common.DumpTokenEndpointConfig;
+import microsec.common.Targets;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 import microsec.freddysbbq.order.model.v1.Order;
 
@@ -71,6 +72,11 @@ public class CustomerApplication {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Bean
+    public Targets targets() {
+        return new Targets();
+    }
+
     @PostConstruct
     public void halConfig() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -91,10 +97,10 @@ public class CustomerApplication {
     public String menu(Model model) throws Exception {
         PagedResources<MenuItem> menu = oauth2RestTemplate
                 .exchange(
-                        "http://localhost:8083/menuItems",
+                        "{menu}/menuItems",
                         HttpMethod.GET, null,
                         new ParameterizedTypeReference<PagedResources<MenuItem>>() {
-                        })
+                        }, targets().getMenu())
                 .getBody();
         model.addAttribute("menu", menu.getContent());
         return "menu";
@@ -104,10 +110,10 @@ public class CustomerApplication {
     public String myOrders(Model model) throws Exception {
         Collection<Order> orders = oauth2RestTemplate
                 .exchange(
-                        "http://localhost:8085/myorders",
+                        "{order}/myorders",
                         HttpMethod.GET, null,
                         new ParameterizedTypeReference<Collection<Order>>() {
-                        })
+                        }, targets().getOrder())
                 .getBody();
         model.addAttribute("orders", orders);
         return "myorders";
@@ -116,7 +122,7 @@ public class CustomerApplication {
     @RequestMapping(method = RequestMethod.POST, value = "/myorders")
     public String placeOrder(Model model, @ModelAttribute OrderForm orderForm) throws Exception {
         oauth2RestTemplate
-                .postForObject("http://localhost:8085/myorders", orderForm.getOrder(), Void.class);
+                .postForObject("{order}/myorders", orderForm.getOrder(), Void.class, targets().getOrder());
         return "redirect:.";
     }
 

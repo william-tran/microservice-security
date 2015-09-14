@@ -8,10 +8,10 @@ zuul:
   routes:
     uaa:
       path: /uaa/**
-      url: http://localhost:8080/uaa/
+      url: ${targets.uaa}/
     menu:
       path: /menu/**
-      url: http://localhost:8083/menuItems/
+      url: ${targets.menu}/menuItems/
     myorders:
       path: /myorders/**
-      url: http://localhost:8085/myorders/
+      url: ${targets.order}/myorders/

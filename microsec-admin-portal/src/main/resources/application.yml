@@ -6,11 +6,11 @@ security:
     
 spring.oauth2:
   client:
-    accessTokenUri: http://localhost:8080/uaa/oauth/token
-    userAuthorizationUri: http://localhost:8080/uaa/oauth/authorize
+    accessTokenUri: ${targets.uaa}/oauth/token
+    userAuthorizationUri: ${targets.uaa}/oauth/authorize
     clientId: admin-portal
     clientSecret: secret
     scope: openid,menu.read,menu.write,order.admin
   resource:
-    jwt.keyUri: http://localhost:8080/uaa/token_key
+    jwt.keyUri: ${targets.uaa}/token_key
 

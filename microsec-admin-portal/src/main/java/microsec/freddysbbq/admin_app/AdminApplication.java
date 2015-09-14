@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import microsec.common.DumpTokenEndpointConfig;
+import microsec.common.Targets;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 import microsec.freddysbbq.order.model.v1.Order;
 
@@ -70,6 +71,11 @@ public class AdminApplication {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Bean
+    public Targets targets() {
+        return new Targets();
+    }
+
     @PostConstruct
     public void halConfig() {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -90,10 +96,10 @@ public class AdminApplication {
     public String menu(Model model) throws Exception {
         PagedResources<MenuItem> menu = restTemplate
                 .exchange(
-                        "http://localhost:8083/menuItems",
+                        "{menu}/menuItems",
                         HttpMethod.GET, null,
                         new ParameterizedTypeReference<PagedResources<MenuItem>>() {
-                        })
+                        }, targets().getMenu())
                 .getBody();
         model.addAttribute("menu", menu.getContent());
         return "menu";
@@ -108,7 +114,7 @@ public class AdminApplication {
     @RequestMapping(method = RequestMethod.POST, value = "/menuItems/new/")
     public String saveNewMenuItem(@ModelAttribute MenuItem menuItem) throws Exception {
         restTemplate
-                .postForEntity("http://localhost:8083/menuItems/", menuItem, Void.class);
+                .postForEntity("{menu}/menuItems/", menuItem, Void.class, targets().getMenu());
         return "redirect:..";
     }
 
@@ -116,10 +122,10 @@ public class AdminApplication {
     public String viewMenuItem(Model model, @PathVariable String id) throws Exception {
         Resource<MenuItem> item = restTemplate
                 .exchange(
-                        "http://localhost:8083/menuItems/{id}",
+                        "{menu}/menuItems/{id}",
                         HttpMethod.GET, null,
                         new ParameterizedTypeReference<Resource<MenuItem>>() {
-                        }, id)
+                        }, targets().getMenu(), id)
                 .getBody();
         model.addAttribute("menuItem", item.getContent());
         return "menuItem";
@@ -127,13 +133,13 @@ public class AdminApplication {
 
     @RequestMapping(method = RequestMethod.POST, value = "/menuItems/{id}")
     public String saveMenuItem(@PathVariable String id, @ModelAttribute MenuItem menuItem) throws Exception {
-        restTemplate.put("http://localhost:8083/menuItems/{id}", menuItem, id);
+        restTemplate.put("{menu}/menuItems/{id}", menuItem, targets().getMenu(), id);
         return "redirect:..";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/menuItems/{id}/delete")
     public String deleteMenuItem(@PathVariable String id, @ModelAttribute MenuItem menuItem) throws Exception {
-        restTemplate.delete("http://localhost:8083/menuItems/{id}", id);
+        restTemplate.delete("{menu}/menuItems/{id}", targets().getMenu(), id);
         return "redirect:..";
     }
 
@@ -141,10 +147,10 @@ public class AdminApplication {
     public String viewOrders(Model model) {
         PagedResources<Order> orders = restTemplate
                 .exchange(
-                        "http://localhost:8085/orders",
+                        "{order}/orders",
                         HttpMethod.GET, null,
                         new ParameterizedTypeReference<PagedResources<Order>>() {
-                        })
+                        }, targets().getOrder())
                 .getBody();
         model.addAttribute("orders", orders.getContent());
         return "orders";
@@ -152,7 +158,7 @@ public class AdminApplication {
 
     @RequestMapping(method = RequestMethod.POST, value = "/orders/{id}/delete")
     public String deleteOrder(@PathVariable String id) {
-        restTemplate.delete("http://localhost:8085/orders/{id}", id);
+        restTemplate.delete("{order}/orders/{id}", targets().getOrder(), id);
         return "redirect:..";
     }
 
