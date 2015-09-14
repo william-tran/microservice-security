@@ -22,6 +22,10 @@ oauth:
       scope: openid,menu.read,menu.write,order.admin
       authorities: uaa.resource
       redirect-uri: http://localhost:8084/login
+    mobile-app:
+      secret: secret
+      authorized-grant-types: password
+      scope: openid,menu.read,order.me
 
 scim:
   users:
