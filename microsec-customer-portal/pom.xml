@@ -35,6 +35,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-hateoas</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.pivotal.spring.cloud</groupId>
+      <artifactId>spring-cloud-sso-connector</artifactId>
+      <version>1.0.0.BUILD-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
 </project>

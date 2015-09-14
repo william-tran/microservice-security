@@ -15,3 +15,10 @@ zuul:
     myorders:
       path: /myorders/**
       url: ${targets.order}/myorders/
+
+---
+
+spring:
+  profiles: cloud 
+
+targets.scheme: http
