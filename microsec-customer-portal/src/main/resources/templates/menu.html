@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Freddy's Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <h1>Freddy's Menu</h1>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <td>Item</td><td>Price</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="item : ${menu}">
+        <td th:text="${item.name}">Something</td><td th:text="${item.price}">$1.00</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
