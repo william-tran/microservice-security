@@ -6,8 +6,12 @@ import java.util.Collections;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.cloud.security.oauth2.sso.EnableOAuth2Sso;
+import org.springframework.cloud.security.oauth2.sso.OAuth2SsoConfigurerAdapter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,24 @@ public class CustomerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CustomerApplication.class, args);
+    }
+
+    @Bean
+    public OAuth2SsoConfigurerAdapter oAuth2SsoConfigurerAdapter(SecurityProperties securityProperties) {
+        return new OAuth2SsoConfigurerAdapter() {
+            @Override
+            public void match(RequestMatchers matchers) {
+                matchers.antMatchers("/**");
+            }
+
+            @Override
+            public void configure(HttpSecurity http) throws Exception {
+                if (securityProperties.isRequireSsl()) {
+                    http.requiresChannel().anyRequest().requiresSecure();
+                }
+                http.authorizeRequests().anyRequest().authenticated();
+            }
+        };
     }
 
     @RequestMapping("/")
