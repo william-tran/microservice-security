@@ -8,6 +8,16 @@ oauth:
       - uaa.user
       - approvals.me
       - oauth.approvals
+  clients:
+    sso:
+      secret: secret
+      authorized-grant-types: authorization_code
+      scope: openid
+      authorities: uaa.resource
+      redirect-uri: http://localhost:8081/login
+scim:
+  users:
+    - wtran|demo|wtran@pivotal.io|Will|Tran
     
 jwt:
   token:
