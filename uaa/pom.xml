@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>microsec-uaa</artifactId>
+
+  <parent>
+    <groupId>com.willtran.springone2gx</groupId>
+    <artifactId>microsec-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.cloudfoundry.identity</groupId>
+      <artifactId>cloudfoundry-identity-uaa</artifactId>
+      <version>2.7.1</version>
+      <type>war</type>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <configuration>
+          <container>
+            <containerId>tomcat8x</containerId>
+            <type>embedded</type>
+            <systemProperties>
+              <UAA_CONFIG_PATH>${project.basedir}</UAA_CONFIG_PATH>
+            </systemProperties>
+          </container>
+          <deployables>
+            <deployable>
+              <groupId>org.cloudfoundry.identity</groupId>
+              <artifactId>cloudfoundry-identity-uaa</artifactId>
+              <type>war</type>
+              <properties>
+                <context>uaa</context>
+              </properties>
+            </deployable>
+          </deployables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
