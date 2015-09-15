@@ -1,0 +1,16 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Dump Token</title>
+</head>
+<body>
+  <div th:if="${decodedToken}">
+    <p>This is the decoded token</p>
+    <pre th:text="${decodedToken}"></pre>
+  </div>
+  <div>
+    <p>This is the raw token</p>
+    <textarea style="width: 40em; height:12em;" th:text="${rawToken}"></textarea>
+    <p>its <b th:text="${rawToken.length()}">0</b> characters long</p>
+  </div>
+</body>
+</html>
