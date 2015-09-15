@@ -17,6 +17,7 @@
   <modules>
     <module>microsec-common</module>
     <module>microsec-openid-sso</module>
+    <module>microsec-customer-portal</module>
   </modules>
 
   
