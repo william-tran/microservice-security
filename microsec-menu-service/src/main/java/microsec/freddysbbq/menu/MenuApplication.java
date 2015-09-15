@@ -7,15 +7,21 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.cloud.security.oauth2.resource.EnableOAuth2Resource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 
 @SpringBootApplication
 @EntityScan(basePackageClasses = MenuItem.class)
+@EnableOAuth2Resource
 public class MenuApplication {
 
     public static void main(String[] args) {
@@ -41,5 +47,18 @@ public class MenuApplication {
         protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
             config.exposeIdsFor(MenuItem.class);
         }
+    }
+
+    @Bean
+    ResourceServerConfigurerAdapter resourceServerConfigurerAdapter(SecurityProperties securityProperties) {
+        return new ResourceServerConfigurerAdapter() {
+
+            @Override
+            public void configure(HttpSecurity http) throws Exception {
+                if (securityProperties.isRequireSsl()) {
+                    http.requiresChannel().anyRequest().requiresSecure();
+                }
+            }
+        };
     }
 }
