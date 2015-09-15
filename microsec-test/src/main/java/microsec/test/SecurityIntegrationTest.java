@@ -2,6 +2,7 @@ package microsec.test;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -24,14 +25,19 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.jwt.JwtHelper;
+import org.springframework.security.jwt.crypto.sign.MacSigner;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebIntegrationTest()
 @TestPropertySource(properties = {
         "server.port=0",
+        "spring.oauth2.resource.jwt.keyValue=test"
 })
 public abstract class SecurityIntegrationTest {
 
@@ -69,7 +75,7 @@ public abstract class SecurityIntegrationTest {
     }
 
     protected HttpResponse httpsRequest(String uri) throws ClientProtocolException, IOException {
-        return httpsRequest(uri, null);
+        return httpsRequest(uri, (Map<String, String>) null);
     }
 
     protected HttpResponse httpsRequest(String uri, Map<String, String> headers) throws ClientProtocolException,
@@ -124,7 +130,22 @@ public abstract class SecurityIntegrationTest {
                 .toUriString();
         Assert.assertEquals(expectedLocation, response.getFirstHeader("Location").getValue());
     }
-    
-    
+
+    private MacSigner signer = new MacSigner("test");
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    protected HttpResponse httpsRequest(String uri, UaaJwtToken token)
+            throws ClientProtocolException, IOException {
+        return httpsRequest(HttpMethod.GET, uri, token, null, null);
+    }
+
+    protected HttpResponse httpsRequest(HttpMethod method, String uri, UaaJwtToken token, ContentType contentType,
+            String body)
+                    throws ClientProtocolException, IOException {
+        String tokenValue = JwtHelper.encode(objectMapper.writeValueAsString(token), signer).getEncoded();
+
+        return httpsRequest(method, uri, Collections.singletonMap("Authorization", "Bearer " + tokenValue), contentType,
+                body);
+    }
 
 }
