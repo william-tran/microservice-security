@@ -1,0 +1,46 @@
+#spring.profiles.active: google
+server.port: 8081
+
+security:
+  basic:
+    enabled: false
+
+spring.oauth2:
+  client:
+    accessTokenUri: http://localhost:8080/uaa/oauth/token
+    userAuthorizationUri: http://localhost:8080/uaa/oauth/authorize
+    clientId: sso
+    clientSecret: secret
+  resource:
+    jwt.keyUri: http://localhost:8080/uaa/token_key
+    userInfoUri: http://localhost:8080/uaa/userinfo
+
+---
+
+spring:
+  profiles: google      
+
+spring.oauth2:
+  client:
+    accessTokenUri: https://accounts.google.com/o/oauth2/token
+    userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
+    clientId: 253642003590-5ckdrrsltsh8af2rc872u2vv0q960po5.apps.googleusercontent.com
+    clientSecret: ${google.secret}
+    scope: openid
+  resource:
+    jwt.keyUri: 
+    userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+
+---
+
+spring:
+  profiles: cloud
+
+server:
+  tomcat:
+    remote_ip_header: x-forwarded-for
+    protocol_header: x-forwarded-proto
+    internal_proxies: 10\.\d{1,3}\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}|169\.254\.\d{1,3}\.\d{1,3}|127\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.1[6-9]{1}\.\d{1,3}\.\d{1,3}|172\.2[0-9]{1}\.\d{1,3}\.\d{1,3}|172\.3[0-1]{1}\.\d{1,3}\.\d{1,3}
+
+security:
+  require-ssl: true
