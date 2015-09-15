@@ -17,6 +17,7 @@
   <modules>
     <module>microsec-common</module>
     <module>microsec-customer-portal</module>
+    <module>microsec-test</module>
   </modules>
 
   
