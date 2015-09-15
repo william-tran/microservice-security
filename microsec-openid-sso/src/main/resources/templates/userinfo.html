@@ -1,0 +1,17 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Userinfo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <h1 th:text="|Hello ${username}!|">Hello World!</h1>
+
+  <p>You've used the authcode flow! Here's the result of calling /userinfo:</p>
+  <pre th:text="${response}"></pre>
+  <p>This is the access token that was used:</p>
+  <textarea style="width: 40em; height:12em;" th:text="${token}"></textarea>
+
+</body>
+</html>

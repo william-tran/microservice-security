@@ -1,0 +1,6 @@
+---
+applications:
+ - name: wtran-openid-sso
+   path: target/microsec-openid-sso.jar
+   services:
+    - wtran-sso-service
