@@ -19,6 +19,7 @@
     <module>microsec-openid-sso</module>
     <module>microsec-customer-portal</module>
     <module>microsec-test</module>
+    <module>microsec-menu-service</module>
   </modules>
 
   
