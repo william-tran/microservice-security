@@ -13,12 +13,13 @@ oauth:
     customer-portal:
       secret: secret
       authorized-grant-types: authorization_code
-      scope: openid
+      scope: openid,menu.read
       authorities: uaa.resource
       redirect-uri: http://localhost:8082/login
 scim:
   users:
     - wtran|demo|wtran@pivotal.io|Will|Tran
+    - frank|demo|frank@whitehouse.gov|Frank|Underwood|menu.read
     
 jwt:
   token:
