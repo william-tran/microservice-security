@@ -1,9 +1,11 @@
 package microsec.freddysbbq.customer_app;
 
-import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.Collections;
+import java.util.Arrays;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -11,10 +13,20 @@ import org.springframework.cloud.security.oauth2.sso.EnableOAuth2Sso;
 import org.springframework.cloud.security.oauth2.sso.OAuth2SsoConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import microsec.common.DumpTokenEndpointConfig;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
@@ -47,6 +59,22 @@ public class CustomerApplication {
         };
     }
 
+    @Autowired
+    private OAuth2RestTemplate oauth2RestTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @PostConstruct
+    public void halConfig() {
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.registerModule(new Jackson2HalModule());
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(MediaType.parseMediaTypes("application/hal+json"));
+        converter.setObjectMapper(objectMapper);
+        oauth2RestTemplate.setMessageConverters(Arrays.asList(converter));
+    }
+
     @RequestMapping("/")
     public String index(Model model, Principal principal) {
         model.addAttribute("username", principal.getName());
@@ -55,10 +83,14 @@ public class CustomerApplication {
 
     @RequestMapping("/menu")
     public String menu(Model model) throws Exception {
-        MenuItem menuItem = new MenuItem();
-        menuItem.setName("ribs");
-        menuItem.setPrice(new BigDecimal(10.00));
-        model.addAttribute("menu", Collections.singleton(menuItem));
+        PagedResources<MenuItem> menu = oauth2RestTemplate
+                .exchange(
+                        "http://localhost:8083/menuItems",
+                        HttpMethod.GET, null,
+                        new ParameterizedTypeReference<PagedResources<MenuItem>>() {
+                        })
+                .getBody();
+        model.addAttribute("menu", menu.getContent());
         return "menu";
     }
 
