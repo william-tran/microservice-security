@@ -15,7 +15,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 
@@ -50,8 +52,12 @@ public class MenuApplication {
     }
 
     @Bean
-    ResourceServerConfigurerAdapter resourceServerConfigurerAdapter(SecurityProperties securityProperties) {
+    public ResourceServerConfigurer resourceServer(SecurityProperties securityProperties) {
         return new ResourceServerConfigurerAdapter() {
+            @Override
+            public void configure(ResourceServerSecurityConfigurer resources) {
+                resources.resourceId("menu");
+            }
 
             @Override
             public void configure(HttpSecurity http) throws Exception {
