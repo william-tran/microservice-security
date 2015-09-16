@@ -25,7 +25,7 @@ oauth:
 
 scim:
   users:
-    - wtran|demo|wtran@pivotal.io|Will|Tran
+    - wtran|demo|wtran@pivotal.io|Will|Tran|menu.read,order.me
     - frank|demo|frank@whitehouse.gov|Frank|Underwood|menu.read,order.me
     - freddy|demo|freddy@freddysbbq.com|Freddy|Hayes|menu.read,menu.write,order.admin
 
