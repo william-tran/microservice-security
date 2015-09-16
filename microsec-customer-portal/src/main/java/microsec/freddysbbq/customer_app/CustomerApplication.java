@@ -2,6 +2,8 @@ package microsec.freddysbbq.customer_app;
 
 import java.security.Principal;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 import javax.annotation.PostConstruct;
 
@@ -23,13 +25,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.Data;
 import microsec.common.DumpTokenEndpointConfig;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
+import microsec.freddysbbq.order.model.v1.Order;
 
 @SpringBootApplication
 @Controller
@@ -92,6 +98,31 @@ public class CustomerApplication {
                 .getBody();
         model.addAttribute("menu", menu.getContent());
         return "menu";
+    }
+
+    @RequestMapping("/myorders")
+    public String myOrders(Model model) throws Exception {
+        Collection<Order> orders = oauth2RestTemplate
+                .exchange(
+                        "http://localhost:8085/myorders",
+                        HttpMethod.GET, null,
+                        new ParameterizedTypeReference<Collection<Order>>() {
+                        })
+                .getBody();
+        model.addAttribute("orders", orders);
+        return "myorders";
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/myorders")
+    public String placeOrder(Model model, @ModelAttribute OrderForm orderForm) throws Exception {
+        oauth2RestTemplate
+                .postForObject("http://localhost:8085/myorders", orderForm.getOrder(), Void.class);
+        return "redirect:.";
+    }
+
+    @Data
+    public static class OrderForm {
+        private LinkedHashMap<Long, Integer> order = new LinkedHashMap<Long, Integer>();
     }
 
 }

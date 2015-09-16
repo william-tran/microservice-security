@@ -25,4 +25,9 @@ public class CustomerApplicationSecurityTests extends SecurityIntegrationTest {
         checkRequiresHttpsAndOauthSso("/menu", ssoProperties.getLoginPath());
     }
 
+    @Test
+    public void testMyOrdersSecurity() throws Exception {
+        checkRequiresHttpsAndOauthSso("/myorders", ssoProperties.getLoginPath());
+    }
+
 }

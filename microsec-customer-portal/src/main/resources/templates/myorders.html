@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Freddy's Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <h1>Your Orders</h1>
+    <ul th:each="order : ${orders}">
+      <li>
+        <p>Order placed on <b th:text="${order.placed}">Friday</b> for <b th:text="|$ ${order.total}|">$ 20.00</b></p>
+        <table border="1">
+          <thead>
+            <tr>
+              <td>Item</td><td>Price</td><td>Quantity</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="item : ${order.orderItems}">
+              <td th:text="${item.name}">Something</td>
+              <td th:text="${item.price}">$1.00</td>
+              <td th:text="${item.quantity}">1</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+    <a href="/">Back to home</a>
+</body>
+</html>
