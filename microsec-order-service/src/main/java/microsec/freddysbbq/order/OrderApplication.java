@@ -47,7 +47,7 @@ public class OrderApplication {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
                 http.authorizeRequests()
-                        .antMatchers("/**").access("#oauth2.hasScope('order.admin')");
+                        .antMatchers("/orders/**").access("#oauth2.hasScope('order.admin')");
             }
         };
     }
