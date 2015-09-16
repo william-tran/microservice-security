@@ -30,6 +30,10 @@ public class MenuApplicationSecurityTests extends SecurityIntegrationTest {
 
         token.setAud(Arrays.asList("menu"));
         response = httpsRequest("/menuItems", token);
+        Assert.assertEquals(403, response.getStatusLine().getStatusCode());
+
+        token.setScope(Arrays.asList("menu.read"));
+        response = httpsRequest("/menuItems", token);
         Assert.assertEquals(200, response.getStatusLine().getStatusCode());
 
     }

@@ -64,6 +64,10 @@ public class MenuApplication {
                 if (securityProperties.isRequireSsl()) {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
+                http.requestMatchers()
+                        .antMatchers("/**")
+                        .and().authorizeRequests()
+                        .anyRequest().access("#oauth2.hasScope('menu.read')");
             }
         };
     }
