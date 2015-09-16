@@ -4,7 +4,10 @@ security:
   basic:
     enabled: false
 spring.oauth2:
+  client:
+    clientId: order
   resource:
     id: order
     jwt.keyUri: http://localhost:8080/uaa/token_key
+    userInfoUri: http://localhost:8080/uaa/userinfo
 
