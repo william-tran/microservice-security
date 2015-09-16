@@ -7,17 +7,23 @@
 <body>
   <h1>Freddy's Menu</h1>
 
-  <table border="1">
-    <thead>
-      <tr>
-        <td>Item</td><td>Price</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="item : ${menu}">
-        <td th:text="${item.name}">Something</td><td th:text="${item.price}">$1.00</td>
-      </tr>
-    </tbody>
-  </table>
+  <form method="POST" th:action="@{/myorders/}">
+    <table border="1">
+      <thead>
+        <tr>
+          <td>Item</td><td>Price</td><td>Quantity</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="item : ${menu}">
+          <td th:text="${item.name}">Something</td>
+          <td th:text="${item.price}">$1.00</td>
+          <td><input type="text" th:name="|order[${item.id}]|"/></td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" value="Place Order"/>
+  </form>
+  <a href="/">Back to home</a>
 </body>
 </html>
