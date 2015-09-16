@@ -1,5 +1,6 @@
 package microsec.freddysbbq.admin_app;
 
+import java.security.Principal;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
@@ -7,6 +8,11 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.cloud.security.oauth2.sso.EnableOAuth2Sso;
+import org.springframework.cloud.security.oauth2.sso.OAuth2SsoConfigurerAdapter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
@@ -14,28 +20,51 @@ import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import microsec.common.DumpTokenEndpointConfig;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 
 @SpringBootApplication
 @Controller
+@EnableOAuth2Sso
+@Import(DumpTokenEndpointConfig.class)
 public class AdminApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AdminApplication.class, args);
     }
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Bean
+    public OAuth2SsoConfigurerAdapter oAuth2SsoConfigurerAdapter(SecurityProperties securityProperties) {
+        return new OAuth2SsoConfigurerAdapter() {
+            @Override
+            public void match(RequestMatchers matchers) {
+                matchers.antMatchers("/**");
+            }
+
+            @Override
+            public void configure(HttpSecurity http) throws Exception {
+                if (securityProperties.isRequireSsl()) {
+                    http.requiresChannel().anyRequest().requiresSecure();
+                }
+                http.authorizeRequests().anyRequest().authenticated();
+            }
+        };
+    }
+
+    @Autowired
+    private OAuth2RestTemplate restTemplate;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -51,8 +80,8 @@ public class AdminApplication {
     }
 
     @RequestMapping("/")
-    public String index(Model model) {
-        model.addAttribute("username", "stub");
+    public String index(Model model, Principal principal) {
+        model.addAttribute("username", principal.getName());
         return "index";
     }
 
