@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import lombok.Setter;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 import microsec.freddysbbq.order.model.v1.Order;
 import microsec.freddysbbq.order.model.v1.OrderItem;
@@ -38,16 +40,19 @@ public class CustomerOrderController {
     private OrderRepository orderRepository;
 
     @Autowired
+    @Setter
     private OAuth2RestTemplate oAuth2RestTemplate;
 
     @Autowired
     private ResourceServerProperties resourceServerProperties;
 
+    @PreAuthorize("#oauth2.hasScope('order.me')")
     @RequestMapping("/myorders")
     public Collection<Order> getMyOrders(Principal principal) {
         return orderRepository.findByCustomerId(principal.getName());
     }
 
+    @PreAuthorize("#oauth2.hasScope('order.me')")
     @RequestMapping(value = "/myorders", method = RequestMethod.POST)
     public ResponseEntity<Void> placeOrder(Principal principal, @RequestBody Map<Long, Integer> itemsAndQuantites) {
         if (itemsAndQuantites.isEmpty()) {
