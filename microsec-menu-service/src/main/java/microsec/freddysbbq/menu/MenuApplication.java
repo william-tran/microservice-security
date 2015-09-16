@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -64,10 +65,12 @@ public class MenuApplication {
                 if (securityProperties.isRequireSsl()) {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
-                http.requestMatchers()
-                        .antMatchers("/**")
-                        .and().authorizeRequests()
-                        .anyRequest().access("#oauth2.hasScope('menu.read')");
+                http
+                        .authorizeRequests()
+                        .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('menu.read')")
+                        .antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('menu.write')")
+                        .antMatchers(HttpMethod.PUT, "/**").access("#oauth2.hasScope('menu.write')")
+                        .antMatchers(HttpMethod.DELETE, "/**").access("#oauth2.hasScope('menu.write')");
             }
         };
     }
