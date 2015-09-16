@@ -1,5 +1,7 @@
 package microsec.freddysbbq.menu;
 
+import java.util.Arrays;
+
 import org.apache.http.HttpResponse;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,7 +24,12 @@ public class MenuApplicationSecurityTests extends SecurityIntegrationTest {
         Assert.assertEquals(401, response.getStatusLine().getStatusCode());
 
         UaaJwtTokenBuilder tokenBuilder = UaaJwtToken.builder();
-        response = httpsRequest("/menuItems", tokenBuilder.build());
+        UaaJwtToken token = tokenBuilder.build();
+        response = httpsRequest("/menuItems", token);
+        Assert.assertEquals(403, response.getStatusLine().getStatusCode());
+
+        token.setAud(Arrays.asList("menu"));
+        response = httpsRequest("/menuItems", token);
         Assert.assertEquals(200, response.getStatusLine().getStatusCode());
 
     }
