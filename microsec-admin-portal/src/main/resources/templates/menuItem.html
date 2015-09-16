@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Freddy's Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <h1>Freddy's Menu</h1>
+
+  <form method="POST" th:action=".">
+    <p><label for="name">Name</label><input type="text" th:field="*{menuItem.name}" id="name" /></p>
+    <p><label for="name">Price</label><input type="text" th:field="*{menuItem.price}" id="price" /></p>
+    <input type="submit" value="save"/>
+  </form>
+  <form method="POST" th:action="delete">
+    <input type="submit" value="delete"/>
+  </form>
+</body>
+</html>

@@ -19,6 +19,7 @@
     <module>microsec-customer-portal</module>
     <module>microsec-test</module>
     <module>microsec-menu-service</module>
+    <module>microsec-admin-portal</module>
   </modules>
 
   
