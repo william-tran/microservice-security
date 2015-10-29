@@ -39,6 +39,11 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.pivotal.spring.cloud</groupId>
+      <artifactId>cloudfoundry-certificate-truster</artifactId>
+      <version>1.0.0.BUILD-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
 </project>

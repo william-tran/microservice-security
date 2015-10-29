@@ -11,3 +11,4 @@ spring.oauth2:
     jwt.keyUri: ${targets.uaa}/token_key
     userInfoUri: ${targets.uaa}/userinfo
 
+spring.jpa.hibernate.ddl-auto: update

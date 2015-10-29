@@ -1,4 +1,7 @@
 ---
+env:
+  TRUST_CERTS: api.coral.springapps.io
+
 applications:
   
  - name: wtran-microsec-customer
