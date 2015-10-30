@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.provider.expression.OAuth2WebSecurityExpressionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -60,7 +61,10 @@ public class AdminApplication {
                 if (securityProperties.isRequireSsl()) {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
-                http.authorizeRequests().anyRequest().authenticated();
+
+                http.authorizeRequests()
+                        .expressionHandler(new OAuth2WebSecurityExpressionHandler())
+                        .anyRequest().access("#oauth2.hasScope('menu.write')");
             }
         };
     }
