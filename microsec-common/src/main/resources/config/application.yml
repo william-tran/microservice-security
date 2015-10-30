@@ -21,6 +21,6 @@ security.require_ssl: true
 
 targets:
   scheme: https
-  uaa: ${targets.scheme}://wtran-springone.login.run.pivotal.io
-  menu: ${targets.scheme}://wtran-microsec-menu.cfapps.io
-  order: ${targets.scheme}://wtran-microsec-order.cfapps.io
+  uaa: ${targets.scheme}://boston.login.coral.springapps.io
+  menu: ${targets.scheme}://wtran-microsec-menu.coral.springapps.io
+  order: ${targets.scheme}://wtran-microsec-order.coral.springapps.io
