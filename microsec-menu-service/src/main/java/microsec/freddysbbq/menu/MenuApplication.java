@@ -1,7 +1,5 @@
 package microsec.freddysbbq.menu;
 
-import java.math.BigDecimal;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +32,13 @@ public class MenuApplication {
     @Autowired
     private MenuItemRepository menuRepository;
 
+    @Autowired
+    private MenuBootstrap menuBootstrap;
+
     @PostConstruct
     public void bootstrap() {
         if (menuRepository.count() == 0) {
-            MenuItem menuItem = new MenuItem();
-            menuItem.setName("full rack of ribs");
-            menuItem.setPrice(new BigDecimal(20));
-            menuRepository.save(menuItem);
+            menuRepository.save(menuBootstrap.getItems());
         }
     }
 

@@ -9,3 +9,10 @@ spring.oauth2:
     jwt.keyUri: ${targets.uaa}/token_key
 
 spring.jpa.hibernate.ddl-auto: update
+
+menuBootstrap:
+  items:
+    - name: Full Rack of Ribs
+      price: 20
+    - name: 1/2 Rack
+      price: 12
