@@ -1,29 +1,32 @@
 ---
-env:
-  TRUST_CERTS: api.coral.springapps.io
+buildpack: java_buildpack_offline
 services:
-  - wtran-sso-service
+  - sso
 
 applications:
   
- - name: wtran-microsec-customer
+ - name: customer-portal
    path: microsec-customer-portal/target/microsec-customer-portal.jar
+   services:
+   - config-server
 
- - name: wtran-microsec-menu
+ - name: menu-service
    path: microsec-menu-service/target/microsec-menu-service.jar
    services:
-    - wtran-mysql
+   - config-server
+   - mysql
    env:
      GRANT_TYPE: client_credentials
 
- - name: wtran-microsec-admin
+ - name: admin-portal
    path: microsec-admin-portal/target/microsec-admin-portal.jar
+   services:
+   - config-server
 
- - name: wtran-microsec-order
+ - name: order-service
    path: microsec-order-service/target/microsec-order-service.jar
-    - wtran-mysql
+   services:
+   - mysql
    env:
      GRANT_TYPE: client_credentials
     
- - name: wtran-microsec-gateway
-   path: microsec-token-encryption-gateway/target/microsec-token-encryption-gateway.jar
