@@ -33,6 +33,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Data;
+import microsec.common.Branding;
 import microsec.common.DumpTokenEndpointConfig;
 import microsec.common.Targets;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
@@ -75,6 +76,11 @@ public class CustomerApplication {
     @Bean
     public Targets targets() {
         return new Targets();
+    }
+
+    @Bean
+    public Branding branding() {
+        return new Branding();
     }
 
     @PostConstruct

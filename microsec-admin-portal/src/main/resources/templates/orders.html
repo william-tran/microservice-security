@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Freddy's Orders</title>
+<title th:text="${@branding.restaurantName} + ' | Orders'">Restaurant | Orders</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -26,15 +26,15 @@
               </tr>
               <tr>
                 <td>First Name</td>
-                <td th:text="${order.firstName}">Freddy</td>
+                <td th:text="${order.firstName}">First</td>
               </tr>
               <tr>
                 <td>Last Name</td>
-                <td th:text="${order.lastName}">Hayes</td>
+                <td th:text="${order.lastName}">Last</td>
               </tr>
               <tr>
                 <td>Email</td>
-                <td th:text="${order.email}">freddy@freddysbbq.com</td>
+                <td th:text="${order.email}">first.last@email.com</td>
               </tr>
             </table>
           </td>

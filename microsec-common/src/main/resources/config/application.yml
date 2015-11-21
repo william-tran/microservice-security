@@ -12,6 +12,10 @@ targets:
   menu: ${targets.scheme}://localhost:8083
   order: ${targets.scheme}://localhost:8085
   
+branding:
+  restaurantName: Freddy's BBJ Joint
+  menuTitle: Freddy's Menu
+  
 ---
 
 spring:

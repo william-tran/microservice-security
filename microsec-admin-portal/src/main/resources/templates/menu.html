@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Freddy's Menu</title>
+<title th:text="${@branding.restaurantName} + ' | Menu'">Restaurant | Menu</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-  <h1>Freddy's Menu</h1>
+  <h1 th:text="|${@branding.menuTitle}|">The Menu</h1>
 
   <table border="1">
     <thead>
