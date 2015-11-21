@@ -9,9 +9,9 @@
   <packaging>pom</packaging>
 
   <parent>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-parent</artifactId>
-    <version>Angel.SR3</version>
+    <groupId>io.pivotal.spring.cloud</groupId>
+    <artifactId>spring-cloud-services-starter-parent</artifactId>
+    <version>1.0.1.RELEASE</version>
   </parent>
 
   <modules>

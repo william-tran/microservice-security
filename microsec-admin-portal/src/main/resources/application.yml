@@ -1,3 +1,5 @@
+spring.application.name: admin-portal
+
 server.port: 8084
 
 security:

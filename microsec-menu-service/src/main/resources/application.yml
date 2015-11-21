@@ -1,3 +1,5 @@
+spring.application.name: menu-service
+
 server.port: 8083
 
 security:

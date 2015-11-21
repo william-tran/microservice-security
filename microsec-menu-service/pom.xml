@@ -39,6 +39,10 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.pivotal.spring.cloud</groupId>
+      <artifactId>spring-cloud-services-starter-config-client</artifactId>
+    </dependency>
   </dependencies>
 
 </project>
