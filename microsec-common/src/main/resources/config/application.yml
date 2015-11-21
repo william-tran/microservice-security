@@ -13,7 +13,7 @@ targets:
   order: ${targets.scheme}://localhost:8085
   
 branding:
-  restaurantName: Freddy's BBJ Joint
+  restaurantName: Freddy's BBQ Joint
   menuTitle: Freddy's Menu
   
 ---
