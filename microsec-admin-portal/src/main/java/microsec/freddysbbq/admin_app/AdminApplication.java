@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.security.oauth2.sso.EnableOAuth2Sso;
 import org.springframework.cloud.security.oauth2.sso.OAuth2SsoConfigurerAdapter;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import microsec.common.Branding;
 import microsec.common.DumpTokenEndpointConfig;
@@ -45,6 +47,7 @@ import microsec.freddysbbq.order.model.v1.Order;
 @Controller
 @EnableOAuth2Sso
 @EnableDiscoveryClient
+@EnableCircuitBreaker
 @Import(DumpTokenEndpointConfig.class)
 public class AdminApplication {
 
@@ -106,6 +109,7 @@ public class AdminApplication {
         return "index";
     }
 
+    @HystrixCommand
     @RequestMapping("/menuItems")
     public String menu(Model model) throws Exception {
         PagedResources<MenuItem> menu = restTemplate
@@ -125,6 +129,7 @@ public class AdminApplication {
         return "menuItem";
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST, value = "/menuItems/new/")
     public String saveNewMenuItem(@ModelAttribute MenuItem menuItem) throws Exception {
         restTemplate
@@ -132,6 +137,7 @@ public class AdminApplication {
         return "redirect:..";
     }
 
+    @HystrixCommand
     @RequestMapping("/menuItems/{id}")
     public String viewMenuItem(Model model, @PathVariable String id) throws Exception {
         Resource<MenuItem> item = restTemplate
@@ -145,18 +151,21 @@ public class AdminApplication {
         return "menuItem";
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST, value = "/menuItems/{id}")
     public String saveMenuItem(@PathVariable String id, @ModelAttribute MenuItem menuItem) throws Exception {
         restTemplate.put("{menu}/menuItems/{id}", menuItem, targets().getMenu(), id);
         return "redirect:..";
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST, value = "/menuItems/{id}/delete")
     public String deleteMenuItem(@PathVariable String id, @ModelAttribute MenuItem menuItem) throws Exception {
         restTemplate.delete("{menu}/menuItems/{id}", targets().getMenu(), id);
         return "redirect:..";
     }
 
+    @HystrixCommand
     @RequestMapping("/orders/")
     public String viewOrders(Model model) {
         PagedResources<Order> orders = restTemplate
@@ -170,10 +179,12 @@ public class AdminApplication {
         return "orders";
     }
 
+    @HystrixCommand
     @RequestMapping(method = RequestMethod.POST, value = "/orders/{id}/delete")
     public String deleteOrder(@PathVariable String id) {
         restTemplate.delete("{order}/orders/{id}", targets().getOrder(), id);
         return "redirect:..";
     }
+
 
 }

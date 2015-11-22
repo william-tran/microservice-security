@@ -16,6 +16,9 @@ branding:
   restaurantName: Freddy's BBQ Joint
   menuTitle: Freddy's Menu
   
+# run hystrix commands in the same thread 
+hystrix.command.default.execution.isolation.strategy: SEMAPHORE
+  
 ---
 
 spring:
