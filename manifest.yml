@@ -10,6 +10,7 @@ applications:
    path: microsec-customer-portal/target/microsec-customer-portal.jar
    services:
    - config-server
+   - circuit-breaker
 
  - name: menu-service
    path: microsec-menu-service/target/microsec-menu-service.jar
@@ -23,6 +24,7 @@ applications:
    path: microsec-admin-portal/target/microsec-admin-portal.jar
    services:
    - config-server
+   - circuit-breaker
 
  - name: order-service
    path: microsec-order-service/target/microsec-order-service.jar
