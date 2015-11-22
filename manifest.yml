@@ -2,6 +2,7 @@
 buildpack: java_buildpack_offline
 services:
   - sso
+  - service-registry
 
 applications:
   
