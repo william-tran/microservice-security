@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,8 +42,14 @@ public class CustomerOrderController {
     private OrderRepository orderRepository;
 
     @Autowired
+    @Qualifier("loadBalancedOauth2RestTemplate")
     @Setter
     private OAuth2RestTemplate oAuth2RestTemplate;
+
+    @Autowired
+    @Qualifier("userInfoRestTemplate")
+    @Setter
+    private OAuth2RestTemplate userInfoRestTemplate;
 
     @Autowired
     private ResourceServerProperties resourceServerProperties;
@@ -62,7 +69,8 @@ public class CustomerOrderController {
         if (itemsAndQuantites.isEmpty()) {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
-        UserInfo userInfo = oAuth2RestTemplate.getForObject(resourceServerProperties.getUserInfoUri(), UserInfo.class);
+        UserInfo userInfo = userInfoRestTemplate
+                .getForObject(resourceServerProperties.getUserInfoUri(), UserInfo.class);
         Order order = new Order();
         order.setCustomerId(principal.getName());
         order.setEmail(userInfo.getEmail());

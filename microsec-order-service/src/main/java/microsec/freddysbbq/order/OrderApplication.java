@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.security.oauth2.resource.EnableOAuth2Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ import microsec.freddysbbq.order.model.v1.Order;
 @SpringBootApplication
 @EntityScan(basePackageClasses = Order.class)
 @EnableOAuth2Resource
+@EnableDiscoveryClient
 public class OrderApplication {
 
     public static void main(String[] args) {

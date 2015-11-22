@@ -38,6 +38,10 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-oauth2</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.pivotal.spring.cloud</groupId>
+      <artifactId>spring-cloud-services-starter-service-registry</artifactId>
+    </dependency>
   </dependencies>
 
 </project>

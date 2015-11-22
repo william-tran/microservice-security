@@ -59,6 +59,7 @@ public class OrderApplicationSecurityTests extends SecurityIntegrationTest {
             orderRepository.save(order);
         }
         controller.setOAuth2RestTemplate(mockRestTemplate);
+        controller.setUserInfoRestTemplate(mockRestTemplate);
     }
 
     private Order orderFixture() {

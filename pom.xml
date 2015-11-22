@@ -21,6 +21,7 @@
     <module>microsec-menu-service</module>
     <module>microsec-admin-portal</module>
     <module>microsec-order-service</module>
+    <module>microsec-eureka-server</module>
   </modules>
 
   

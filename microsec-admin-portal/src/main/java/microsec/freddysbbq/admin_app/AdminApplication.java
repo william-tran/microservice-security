@@ -6,9 +6,11 @@ import java.util.Arrays;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.security.oauth2.sso.EnableOAuth2Sso;
 import org.springframework.cloud.security.oauth2.sso.OAuth2SsoConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +44,7 @@ import microsec.freddysbbq.order.model.v1.Order;
 @SpringBootApplication
 @Controller
 @EnableOAuth2Sso
+@EnableDiscoveryClient
 @Import(DumpTokenEndpointConfig.class)
 public class AdminApplication {
 
@@ -71,6 +74,7 @@ public class AdminApplication {
     }
 
     @Autowired
+    @Qualifier("loadBalancedOauth2RestTemplate")
     private OAuth2RestTemplate restTemplate;
 
     @Autowired

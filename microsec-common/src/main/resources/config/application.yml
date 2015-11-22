@@ -9,8 +9,8 @@ spring.thymeleaf.cache: false
 targets:
   scheme: http
   uaa: ${targets.scheme}://localhost:8080/uaa
-  menu: ${targets.scheme}://localhost:8083
-  order: ${targets.scheme}://localhost:8085
+  menu: ${targets.scheme}://menu-service
+  order: ${targets.scheme}://order-service
   
 branding:
   restaurantName: Freddy's BBQ Joint
@@ -26,5 +26,3 @@ security.require_ssl: true
 targets:
   scheme: https
   uaa: ${targets.scheme}://boston.login.coral.springapps.io
-  menu: ${targets.scheme}://wtran-microsec-menu.coral.springapps.io
-  order: ${targets.scheme}://wtran-microsec-order.coral.springapps.io
