@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
+import microsec.common.MenuBootstrap;
 import microsec.freddysbbq.menu.model.v1.MenuItem;
 
 @SpringBootApplication
@@ -34,13 +35,15 @@ public class MenuApplication {
     @Autowired
     private MenuItemRepository menuRepository;
 
-    @Autowired
-    private MenuBootstrap menuBootstrap;
+    @Bean
+    public MenuBootstrap menuBootstrap() {
+        return new MenuBootstrap();
+    }
 
     @PostConstruct
     public void bootstrap() {
         if (menuRepository.count() == 0) {
-            menuRepository.save(menuBootstrap.getItems());
+            menuRepository.save(menuBootstrap().getItems());
         }
     }
 

@@ -16,9 +16,16 @@ branding:
   restaurantName: Freddy's BBQ Joint
   menuTitle: Freddy's Menu
   
+menuBootstrap:
+  items:
+    - name: Full Rack of Ribs
+      price: 20
+    - name: 1/2 Rack
+      price: 12
+  
 # run hystrix commands in the same thread 
 hystrix.command.default.execution.isolation.strategy: SEMAPHORE
-  
+
 ---
 
 spring:
