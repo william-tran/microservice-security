@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootApplication
 @EnableOAuth2Sso
 @EnableDiscoveryClient
+@EnableCircuitBreaker
 @Import(DumpTokenEndpointConfig.class)
 public class CustomerApplication {
 
@@ -72,6 +73,11 @@ public class CustomerApplication {
     @Bean
     public Branding branding() {
         return new Branding();
+    }
+
+    @Bean
+    public MenuBootstrap menuBootstrap() {
+        return new MenuBootstrap();
     }
 
     @PostConstruct

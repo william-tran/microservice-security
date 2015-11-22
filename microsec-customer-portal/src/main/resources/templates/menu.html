@@ -6,23 +6,24 @@
 </head>
 <body>
   <h1 th:text="|${@branding.menuTitle}|">The Menu</h1>
+  <h2 th:if="${menuServiceDown}">The Menu Service is currently offline but here is a sample of some of the items we serve! To place an order, please call the restaurant.</h2>
 
   <form method="POST" th:action="@{/myorders/}">
     <table border="1">
       <thead>
-        <tr>
+        <tr th:if="!${menuServiceDown}">
           <td>Item</td><td>Price</td><td>Quantity</td>
         </tr>
       </thead>
       <tbody>
         <tr th:each="item : ${menu}">
           <td th:text="${item.name}">Something</td>
-          <td th:text="${item.price}">$1.00</td>
-          <td><input type="text" th:name="|order[${item.id}]|"/></td>
+          <td th:if="!${menuServiceDown}" th:text="${item.price}">$1.00</td>
+          <td th:if="!${menuServiceDown}"><input type="text" th:name="|order[${item.id}]|"/></td>
         </tr>
       </tbody>
     </table>
-    <input type="submit" value="Place Order"/>
+    <input th:if="!${menuServiceDown}" type="submit" value="Place Order"/>
   </form>
   <a href="/">Back to home</a>
 </body>
